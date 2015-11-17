@@ -1,10 +1,13 @@
+import gdrive
+
 __author__ = 'Bivoj'
-#from pydrive.auth import GoogleAuth
-#from pydrive.drive import GoogleDrive
-import os, socket
+import os
 import platform
-import lzma
 import pip
+import sys
+import getopt
+#custom imports
+import gdrive.uploader
 
 'System depended loader'
 class Main():
@@ -21,29 +24,60 @@ class Main():
 
     #iai('transliterate')
 
-    def __init__(self):
+    def __init__(self, argv):
+        self.argv = argv
         host = platform.system()
         if host is 'Windows':
-            from windows import profileFinder, compressor
+            from windows import foldersService, compressor
             print("Loading windows modules")
         else:
             from linux import profileFinder
             print("Loading linux modules")
 
-        self.profileFinder = profileFinder.ProfileFinder()
+        self.folderService = foldersService.FoldersService()
         self.compressor = compressor.Compressor()
+        self.hostname = os.environ['COMPUTERNAME']
+        self.defaultfolder = self.folderService.getDefaulProfileFolder()
+
+    def action_upload(self):
+        filename = self.compressor.compress(self.defaultfolder, self.folderService.getTempFolder(), self.hostname)
+        print("Begin upload")
+        gdrive.uploader.upload(filename)
+        print("Cleaning up")
+        os.remove(filename)
+        print("Finished")
+
+    def action_download(self):
+        print("not implemented yet")
+        return True
 
     def run(self):
-        hostname = os.name
-        hostname = self.profileFinder.getProfileFolder()
-        print(hostname)
-        self.compressor.compress(hostname, "D:/")
-        #try:
-        #lzma.open("file")
+        action = ''
+        try:
+            opts, args = getopt.getopt(self.argv, "ha:", ["action="])
+        except getopt.GetoptError:
+            print('main.py -a <download/upload>')
+            sys.exit(2)
+        for opt, arg in opts:
+            if opt == '-h':
+                print('main.py -a <download/upload>')
+                sys.exit()
+            elif opt in ("-a", "--action"):
+                action = arg
+
+        if action == "upload":
+            self.action_upload()
+        elif action == "download":
+            self.action_download()
+        elif action:
+            print("Action not found")
+
+        print("Exit")
 
 
-program = Main()
-program.run()
+if __name__ == "__main__":
+    program = Main(sys.argv[1:])
+    program.run()
 
 
 

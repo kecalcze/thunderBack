@@ -2,9 +2,9 @@ __author__ = 'Jakub'
 import getpass
 import os
 
-class ProfileFinder:
+class FoldersService:
 
-    def getProfileFolder(self):
+    def getDefaulProfileFolder(self):
         uName = getpass.getuser()
 
         thunderbirdPath = 'C:/Users/'+uName+'/AppData/Local/Thunderbird/Profiles'
@@ -15,3 +15,6 @@ class ProfileFinder:
                 break
 
         return profielPath
+
+    def getTempFolder(self):
+        return "C:/Windows/temp/"
