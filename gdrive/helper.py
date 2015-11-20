@@ -52,7 +52,7 @@ def get_fileid_by_name(name, inroot=True):
 
     items = results.get('items', [])
     if not items:
-        print('No files found.')
+        print('FileID not found.')
         return None
     else:
         return items[0]['id']
@@ -73,9 +73,25 @@ def crete_folder(name, parentid=ROOTPARENT):
     # Perform the request and print the result.
     results = service.files().insert(body=body).execute()
     if not results:
-        #print('No files found.')
+        print('Folder not created. Something went wrong.')
         return None
     else:
         return results['id']
 
+def get_fileref_by_name(name, inroot=True):
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('drive', 'v2', http=http)
+
+    if inroot:
+        results = service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
+    else:
+        results = service.files().list(maxResults=1, q="title = '"+name+"' and trashed = false").execute()
+
+    items = results.get('items', [])
+    if not items:
+        print('No files found.')
+        return None
+    else:
+        return items[0]['id']
 #print(get_fileid_by_name("Music"))

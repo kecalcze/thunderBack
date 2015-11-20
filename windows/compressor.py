@@ -16,3 +16,10 @@ class Compressor:
                 zfile.write(fn, fn[rootlen:])
         zfile.close()
         return os.path.join(inputDir, zipfilename)
+
+    def decompress(self, inputFile, outputDir):
+        fh = open(inputFile, 'rb')
+        z = zipfile.ZipFile(fh)
+        for name in z.namelist():
+            z.extract(name, outputDir)
+        fh.close()

@@ -48,7 +48,7 @@ class Main():
         print("Finished")
 
     def action_download(self):
-        print("not implemented yet")
+        self.compressor.decompress("D:/test.zip", "D:/BORDELCODE/gapi/test/")
         return True
 
     def run(self):
