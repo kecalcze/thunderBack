@@ -1,2 +1,2 @@
 __author__ = 'Bivoj'
-__all__ = ["upoader", "helper"]
+__all__ = ["service", "helper"]

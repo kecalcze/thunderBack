@@ -11,87 +11,75 @@ APPLICATION_NAME = 'Desktop Client'
 ROOTPARENT = 'root'
 UPLOADFOLDER = 'ThunderBack'
 
+class Helper:
 
-def get_credentials():
-    """Gets valid user credentials from storage.
+    def __init__(self):
 
-    If nothing has been stored, or if the stored credentials are invalid,
-    the OAuth2 flow is completed to obtain the new credentials.
+        credentials = self.get_credentials()
+        http = credentials.authorize(httplib2.Http())
+        self.service = discovery.build('drive', 'v2', http=http)
 
-    Returns:
-        Credentials, the obtained credential.
-    """
+    def get_credentials(self):
+        """Gets valid user credentials from storage.
 
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    if not os.path.exists(credential_dir):
-        os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,
-                                   'drive-python-quickstart.json')
+        If nothing has been stored, or if the stored credentials are invalid,
+        the OAuth2 flow is completed to obtain the new credentials.
 
-    store = oauth2client.file.Storage(credential_path)
-    credentials = store.get()
-    if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = APPLICATION_NAME
-        flags = tools.argparser.parse_args(args=[])
-        credentials = tools.run_flow(flow, store, flags)
+        Returns:
+            Credentials, the obtained credential.
+        """
 
-        print('Storing credentials to ' + credential_path)
-    return credentials
+        home_dir = os.path.expanduser('~')
+        credential_dir = os.path.join(home_dir, '.credentials')
+        if not os.path.exists(credential_dir):
+            os.makedirs(credential_dir)
+        credential_path = os.path.join(credential_dir,
+                                       'drive-python-quickstart.json')
 
-def get_fileid_by_name(name, inroot=True):
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v2', http=http)
+        store = oauth2client.file.Storage(credential_path)
+        credentials = store.get()
+        if not credentials or credentials.invalid:
+            flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+            flow.user_agent = APPLICATION_NAME
+            flags = tools.argparser.parse_args(args=[])
+            credentials = tools.run_flow(flow, store, flags)
 
-    if inroot:
-        results = service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
-    else:
-        results = service.files().list(maxResults=1, q="title = '"+name+"' and trashed = false").execute()
+            print('Storing credentials to ' + credential_path)
+        return credentials
 
-    items = results.get('items', [])
-    if not items:
-        print('FileID not found.')
-        return None
-    else:
-        return items[0]['id']
+    def get_fileid_by_name(self, name, inroot=True):
 
-def crete_folder(name, parentid=ROOTPARENT):
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v2', http=http)
+        if inroot:
+            results = self.service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
+        else:
+            results = self.service.files().list(maxResults=1, q="title = '"+name+"' and trashed = false").execute()
 
-    # The body contains the metadata for the file.
-    body = {
-      'title': name,
-      'description': 'ThunderBack Upload folder',
-      'mimeType': 'application/vnd.google-apps.folder',
-      'parents': [{'id': parentid}]
-    }
+        items = results.get('items', [])
+        if not items:
+            print('FileID not found.')
+            return None
+        else:
+            return items[0]['id']
 
-    # Perform the request and print the result.
-    results = service.files().insert(body=body).execute()
-    if not results:
-        print('Folder not created. Something went wrong.')
-        return None
-    else:
-        return results['id']
+    def create_folder(self, name, parentid=ROOTPARENT):
 
-def get_fileref_by_name(name, inroot=True):
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('drive', 'v2', http=http)
+        # The body contains the metadata for the file.
+        body = {
+          'title': name,
+          'description': 'ThunderBack Upload folder',
+          'mimeType': 'application/vnd.google-apps.folder',
+          'parents': [{'id': parentid}]
+        }
 
-    if inroot:
-        results = service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
-    else:
-        results = service.files().list(maxResults=1, q="title = '"+name+"' and trashed = false").execute()
+        # Perform the request and print the result.
+        results = self.service.files().insert(body=body).execute()
+        if not results:
+            print('Folder not created. Something went wrong.')
+            return None
+        else:
+            return results['id']
 
-    items = results.get('items', [])
-    if not items:
-        print('No files found.')
-        return None
-    else:
-        return items[0]['id']
+    def get_newest_file(self, folder="root"):
+        result = self.service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
+
 #print(get_fileid_by_name("Music"))

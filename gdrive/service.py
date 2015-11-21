@@ -1,19 +1,15 @@
-"""Google Drive Quickstart in Python.
-This script uploads a single file to Google Drive.
-"""
-
 from gdrive import helper
 import httplib2
 import apiclient.discovery
 import apiclient.http
 import os
 
-class fileService:
+class BaseService:
 
     def upload(self, filename):
         # Metadata about the file.
         MIMETYPE = 'application/octet-stream'
-        DESCRIPTION = 'A shiny new text document about hello world.'
+        DESCRIPTION = 'ThunderBack backup file.'
         TITLE = os.path.basename(filename)
 
         # Create an authorized Drive API client.
@@ -60,7 +56,8 @@ class fileService:
         http = credentials.authorize(httplib2.Http())
         drive_service = apiclient.discovery.build('drive', 'v2', http=http)
 
-        # get newest fiel download url
+        uploadfileid = helper.get_fileid_by_name(helper.UPLOADFOLDER)
+        # get newest file download url
 
         # download file
         # extract file to default folder

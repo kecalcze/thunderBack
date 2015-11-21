@@ -7,7 +7,6 @@ import pip
 import sys
 import getopt
 #custom imports
-import gdrive.uploader
 
 'System depended loader'
 class Main():
@@ -34,23 +33,31 @@ class Main():
             from linux import profileFinder
             print("Loading linux modules")
 
+        # file services
+        self.storage =  gdrive.service.BaseService()
+
+
         self.folderService = foldersService.FoldersService()
         self.compressor = compressor.Compressor()
         self.hostname = os.environ['COMPUTERNAME']
         self.defaultfolder = self.folderService.getDefaulProfileFolder()
 
+    # action for creating new snapshot
     def action_upload(self):
         filename = self.compressor.compress(self.defaultfolder, self.folderService.getTempFolder(), self.hostname)
         print("Begin upload")
-        gdrive.uploader.upload(filename)
+        self.storage.upload(filename)
         print("Cleaning up")
         os.remove(filename)
         print("Finished")
 
+    # action for downloading latest backup
     def action_download(self):
+        self.gdrive.download(self.folderService)
         self.compressor.decompress("D:/test.zip", "D:/BORDELCODE/gapi/test/")
         return True
 
+    # main routine
     def run(self):
         action = ''
         try:
