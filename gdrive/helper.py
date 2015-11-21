@@ -79,8 +79,14 @@ class Helper:
             return None
         else:
             return results['id']
-
-    def get_newest_file(self, folder="root"):
-        result = self.service.files().list(maxResults=1, q="title = '"+name+"' and 'root' in parents and trashed = false").execute()
+    # returns file id and download url
+    def get_newest_file_down_info(self, folder="root"):
+        results = self.service.files().list(maxResults=1,orderBy='modifiedDate', q='"'+folder +'" in parents and trashed = false').execute()
+        items = results.get('items', [])
+        if not results:
+            print('Could`t get file info. Check your connection. Exiting.')
+            exit(1)
+        else:
+            return dict(id=items[0]['id'], downloadUrl=items[0]['downloadUrl'], title=items[0]['title'])
 
 #print(get_fileid_by_name("Music"))

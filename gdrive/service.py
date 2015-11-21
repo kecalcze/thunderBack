@@ -1,5 +1,4 @@
 from gdrive import helper
-import httplib2
 import apiclient.discovery
 import apiclient.http
 import os
@@ -48,13 +47,22 @@ class BaseService:
 
         return new_file
 
-    def download(self, folderServiceCallback):
-        uploadFileId = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
+    def download(self, folder_service_callback):
+        uploadFolder = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
         # get newest file download url
+        downloadInfo = self.helper.get_newest_file_down_info(uploadFolder)
 
         # download file
-        # extract file to default folder
-        return True
+        print('Downloading latest backup ...')
+        resp, content = self.helper.service._http.request(downloadInfo['downloadUrl'])
+        if resp.status == 200:
+            filename = folder_service_callback.getTempFolder()+downloadInfo['title']
+            f = open(filename,'wb')
+            f.write(content)
+            return filename
+        else:
+            print( 'An error occurred: %s' % resp)
+            exit(1)
 
 #upload("D:/Capture.JPG")
 

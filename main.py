@@ -40,9 +40,12 @@ class Main():
 
     # action for downloading latest backup
     def action_download(self):
-        self.gdrive.download(self.folderService)
-        self.compressor.decompress("D:/test.zip", "D:/BORDELCODE/gapi/test/")
-        return True
+        print("Begin download")
+        filename = self.storage.download(self.folderService)
+        print("Start decompression")
+        self.compressor.decompress(filename, self.folderService.getDefaultProfileFolder())
+        print("Cleaning up")
+        os.remove(filename)
 
     # main routine
     def run(self):
