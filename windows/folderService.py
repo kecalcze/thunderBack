@@ -11,7 +11,6 @@ class FolderService:
         for x in os.listdir(thunderbirdPath):
             if ".default" in x:
                 profielPath = thunderbirdPath + "/" + x
-
                 break
 
         return profielPath

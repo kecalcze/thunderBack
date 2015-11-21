@@ -4,9 +4,10 @@ from oauth2client import client
 from oauth2client import tools
 import httplib2
 from apiclient import discovery
+import inspect
 
 SCOPES = 'https://www.googleapis.com/auth/drive'
-CLIENT_SECRET_FILE = 'D:/BORDELCODE/gapi/client_secret.json'
+CLIENT_SECRET_FILE = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + '/client_secret.json'
 APPLICATION_NAME = 'Desktop Client'
 ROOTPARENT = 'root'
 UPLOADFOLDER = 'ThunderBack'

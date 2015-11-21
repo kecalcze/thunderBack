@@ -1,1 +1,2 @@
-__author__ = 'Jakub'
+__author__ = 'Bivoj'
+__all__ = ["folderService", "compressor"]

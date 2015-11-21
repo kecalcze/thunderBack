@@ -4,17 +4,16 @@ import os
 
 class FolderService:
 
-    def getDefaulProfileFolder(self):
+    def getDefaultProfileFolder(self):
         uName = getpass.getuser()
 
-        thunderbirdPath = 'C:/Users/'+uName+'/AppData/Local/Thunderbird/Profiles'
+        thunderbirdPath = '/home/'+uName+'/.thunderbird'
         for x in os.listdir(thunderbirdPath):
             if ".default" in x:
-                profielPath = thunderbirdPath + "/" + x
-
+                profilePath = thunderbirdPath + "/" + x
                 break
 
-        return profielPath
+        return profilePath
 
     def getTempFolder(self):
-        return "C:/Windows/temp/"
+        return "/var/tmp/"

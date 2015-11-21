@@ -3,6 +3,7 @@ import os
 import platform
 import sys
 import getopt
+import socket
 #custom imports
 
 'System depended loader'
@@ -25,11 +26,12 @@ class Main():
 
         self.folderService = folderService.FolderService()
         self.compressor = compressor.Compressor()
-        self.hostname = os.environ['COMPUTERNAME']
+        self.hostname = socket.gethostname()
+        self.defaultFolder = self.folderService.getDefaultProfileFolder()
 
     # action for creating new snapshot
     def action_upload(self):
-        filename = self.compressor.compress(self.defaultfolder, self.folderService.getTempFolder(), self.hostname)
+        filename = self.compressor.compress(self.defaultFolder, self.folderService.getTempFolder(), self.hostname)
         print("Begin upload")
         self.storage.upload(filename)
         print("Cleaning up")
