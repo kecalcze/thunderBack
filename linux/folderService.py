@@ -2,7 +2,7 @@ __author__ = 'Jakub'
 import getpass
 import os
 
-class FoldersService:
+class FolderService:
 
     def getDefaulProfileFolder(self):
         uName = getpass.getuser()

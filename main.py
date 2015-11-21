@@ -1,46 +1,31 @@
-import gdrive
-
 __author__ = 'Bivoj'
 import os
 import platform
-import pip
 import sys
 import getopt
 #custom imports
 
 'System depended loader'
 class Main():
-    def iai(self, package): # import and isnstall
-        import importlib
-        try:
-            importlib.import_module(package)
-        except ImportError:
-            import pip
-            pip.main(['install', package])
-        finally:
-            globals()[package] = importlib.import_module(package)
-
-
-    #iai('transliterate')
 
     def __init__(self, argv):
         self.argv = argv
         host = platform.system()
         if host is 'Windows':
-            from windows import foldersService, compressor
+            from windows import folderService, compressor
             print("Loading windows modules")
         else:
-            from linux import profileFinder
+            from linux import folderService, compressor
             print("Loading linux modules")
 
         # file services
-        self.storage =  gdrive.service.BaseService()
+        from gdrive import service
+        self.storage =  service.BaseService()
 
 
-        self.folderService = foldersService.FoldersService()
+        self.folderService = folderService.FolderService()
         self.compressor = compressor.Compressor()
         self.hostname = os.environ['COMPUTERNAME']
-        self.defaultfolder = self.folderService.getDefaulProfileFolder()
 
     # action for creating new snapshot
     def action_upload(self):

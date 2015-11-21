@@ -1,2 +1,2 @@
 __author__ = 'Bivoj'
-__all__ = ["profileFinder", "compressor"]
+__all__ = ["folderService", "compressor"]
