@@ -8,9 +8,21 @@ solution.
 ## Installation
 
 * Install python3.4 +
-* Install google drive REST API
-   pip install --upgrade google-api-python-client
-* Start using ths script by launching main.py with otions
+* Install google drive REST API:
+
+  * **Windows:**
+
+   `pip install --upgrade google-api-python-client`
+
+  * **Ubuntu 12.04+ :**
+
+  `sudo apt-get install python3-setuptools`
+
+  `sudo easy_install3 pip`
+
+  `sudo pip-3.2 install --upgrade google-api-python-client`
+
+* Start using this script by launching main.py with otiopns
    
    `-a download # get latest backup`
 
