@@ -20,7 +20,7 @@ solution.
 
   `sudo easy_install3 pip`
 
-  `sudo pip-3.2 install --upgrade google-api-python-client`
+  `sudo pip3.x install --upgrade google-api-python-client # x is minor version of your python3 interpreter` 
 
 * Start using this script by launching main.py with otiopns
    
