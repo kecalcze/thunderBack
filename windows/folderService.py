@@ -4,7 +4,7 @@ import os
 
 class FolderService:
 
-    def getDefaulProfileFolder(self):
+    def getDefaultProfileFolder(self):
         uName = getpass.getuser()
 
         thunderbirdPath = 'C:/Users/'+uName+'/AppData/Local/Thunderbird/Profiles'

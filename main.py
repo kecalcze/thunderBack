@@ -5,9 +5,7 @@ import platform
 import sys
 import getopt
 import socket
-#custom imports
 
-'System depended loader'
 class Main():
 
     def __init__(self, argv):
