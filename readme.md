@@ -24,9 +24,9 @@ solution.
 
 * Start using this script by launching main.py with otiopns
    
-   `-a download # get latest backup`
+   `python main.py -a download # get latest backup`
 
-   `-a upload # update backup from this device`
+   `python main.py -a upload # update backup from this device`
    
 
 
