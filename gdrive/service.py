@@ -18,7 +18,7 @@ class BaseService:
         folder_id = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
         if folder_id is None:
             #create the folder
-            folder_id = self.helper.crete_folder(helper.UPLOADFOLDER)
+            folder_id = self.helper.create_folder(helper.UPLOADFOLDER)
 
         # Insert a file. Files are comprised of contents and metadata.
         # MediaFileUpload abstracts uploading file contents from a file on disk.
