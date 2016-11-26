@@ -81,12 +81,13 @@ class Helper:
             return results['id']
     # returns file id and download url
     def get_newest_file_down_info(self, folder="root"):
-        results = self.service.files().list(maxResults=1,orderBy='modifiedDate desc', q='"'+ folder +'" in parents and trashed = false').execute()
+        results = self.service.files().list(maxResults=1,orderBy='modifiedDate desc', q='"' + folder + '" in parents and trashed = false').execute()
         items = results.get('items', [])
+        request = self.service.files().get_media(fileId=items[0]['id'])
         if not results:
             print('Could`t get file info. Check your connection. Exiting.')
             exit(1)
         else:
-            return dict(id=items[0]['id'], downloadUrl=items[0]['downloadUrl'], title=items[0]['title'])
+            return dict(id=items[0]['id'], downloadUrl=items[0]['downloadUrl'], title=items[0]['title'], request=request)
 
 #print(get_fileid_by_name("Music"))

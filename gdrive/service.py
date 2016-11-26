@@ -1,12 +1,36 @@
 from gdrive import helper
 import apiclient.discovery
-import apiclient.http
+from apiclient.http import MediaFileUpload
+from apiclient.http import MediaIoBaseDownload
+from apiclient.errors import HttpError
+import httplib2
 import os
+import io
+import time
+import random
 
 class BaseService:
 
+    # Retry transport and file IO errors.
+    RETRYABLE_ERRORS = (httplib2.HttpLib2Error, IOError)
+
+    # Number of times to retry failed downloads.
+    NUM_RETRIES = 5
+
     def __init__(self):
         self.helper = helper.Helper()
+
+    def handle_progressless_iter(self, error, progressless_iters):
+        if progressless_iters > self.NUM_RETRIES:
+            print
+            'Failed to make progress for too many consecutive iterations.'
+            raise error
+
+        sleeptime = random.random() * (2 ** progressless_iters)
+        print('Caught exception (%s). Sleeping for %s seconds before retry #%d.'
+              % (str(error), sleeptime, progressless_iters))
+
+        time.sleep(sleeptime)
 
     def upload(self, filename):
         # Metadata about the file.
@@ -51,18 +75,36 @@ class BaseService:
         uploadFolder = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
         # get newest file download url
         downloadInfo = self.helper.get_newest_file_down_info(uploadFolder)
+        progressless_iters = 0
 
         # download file
         print('Downloading latest backup ...')
-        resp, content = self.helper.service._http.request(downloadInfo['downloadUrl'])
-        if resp.status == 200:
-            filename = folder_service_callback.getTempFolder()+downloadInfo['title']
-            f = open(filename,'wb')
-            f.write(content)
-            return filename
-        else:
-            print( 'An error occurred: %s' % resp)
-            exit(1)
+        filename = folder_service_callback.getTempFolder() + downloadInfo['title']
+        fh = io.FileIO(filename, 'wb')
+        downloader = MediaIoBaseDownload(fh, downloadInfo['request'])
+        done = False
+        while not done:
+            error = None
+            try:
+                status, done = downloader.next_chunk()
+                print("Download %d%%." % int(status.progress() * 100), end="\r")
+
+            except HttpError as err:
+                error = err
+                if err.resp.status < 500:
+                    raise
+
+            except self.RETRYABLE_ERRORS as err:
+                error = err
+
+
+            if error:
+                progressless_iters += 1
+                self.handle_progressless_iter(error, progressless_iters)
+            else:
+                progressless_iters = 0
+
+        return filename
 
 #upload("D:/Capture.JPG")
 
