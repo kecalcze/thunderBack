@@ -7,7 +7,7 @@ class FolderService:
     def getDefaultProfileFolder(self):
         uName = getpass.getuser()
 
-        thunderbirdPath = 'C:/Users/'+uName+'/AppData/Local/Thunderbird/Profiles'
+        thunderbirdPath = 'C:/Users/'+uName+'/AppData/Roaming/Thunderbird/Profiles'
         for x in os.listdir(thunderbirdPath):
             if ".default" in x:
                 profielPath = thunderbirdPath + "/" + x
