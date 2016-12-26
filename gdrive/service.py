@@ -74,7 +74,8 @@ class BaseService:
             error = None
             try:
                 status, done = uploader.next_chunk()
-                print("Upload %d%%" % int(status.progress() * 100), end="\r")
+                if status is not None:
+                    print("Upload %d%%." % int(status.progress() * 100), end="\r")
 
             except HttpError as err:
                 error = err
