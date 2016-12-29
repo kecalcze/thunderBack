@@ -1,6 +1,5 @@
 from gdrive import helper
 import apiclient.discovery
-from apiclient.http import MediaFileUpload
 from apiclient.http import MediaIoBaseDownload
 from apiclient.errors import HttpError
 import httplib2
@@ -37,6 +36,7 @@ class BaseService:
         MIMETYPE = 'application/octet-stream'
         DESCRIPTION = 'ThunderBack backup file.'
         TITLE = os.path.basename(filename)
+        progressless_iters = 0
 
         # Check if upload folder exists
         folder_id = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
@@ -63,11 +63,33 @@ class BaseService:
         if new_file is None:
             # insert new file
             print("Creating new file ...")
-            new_file = self.helper.service.files().insert(body=body, media_body=media_body).execute()
+            uploader = self.helper.service.files().insert(body=body, media_body=media_body)
         else:
             # update existing file
             print("Updating existing file ...")
-            new_file = self.helper.service.files().update(fileId=new_file, body=body, media_body=media_body).execute()
+            uploader = self.helper.service.files().update(fileId=new_file, body=body, media_body=media_body)
+
+        done = False
+        while not done:
+            error = None
+            try:
+                status, done = uploader.next_chunk()
+                if status is not None:
+                    print("Upload %d%%." % int(status.progress() * 100), end="\r")
+
+            except HttpError as err:
+                error = err
+                if err.resp.status < 500:
+                    raise
+
+            except self.RETRYABLE_ERRORS as err:
+                error = err
+
+            if error:
+                progressless_iters += 1
+                self.handle_progressless_iter(error, progressless_iters)
+            else:
+                progressless_iters = 0
 
         return new_file
 
