@@ -14,13 +14,17 @@ solution.
 
    `pip install --upgrade google-api-python-client`
 
-  * **Ubuntu 12.04+ :**
+  * **Ubuntu 16.04+ :**
 
   `sudo apt-get install python3-setuptools`
 
   `sudo easy_install3 pip`
 
-  `sudo pip3.x install --upgrade google-api-python-client # x is minor version of your python3 interpreter` 
+  `sudo pip3 install --upgrade google-api-python-client` 
+    
+    or
+    
+    ``apt install python3-googleapi``
 
 * Start using this script by launching main.py with otiopns
    
