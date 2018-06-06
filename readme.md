@@ -24,7 +24,7 @@ solution.
     
     or
     
-    ``apt install python3-googleapi``
+    ``apt install python3-googleapi python3-google-apputils python3-googlecloudapis``
 
 * Start using this script by launching main.py with otiopns
    
