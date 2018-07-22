@@ -7,7 +7,15 @@ import getopt
 import socket
 import pprint
 
-class Main():
+
+def sigint_handler(signum, frame):
+    print ('Stop pressing the CTRL+C!')
+
+
+signal.signal(signal.SIGINT, sigint_handler)
+
+
+class Main:
 
     def __init__(self, argv):
         self.argv = argv
@@ -89,6 +97,3 @@ class Main():
 if __name__ == "__main__":
     program = Main(sys.argv[1:])
     program.run()
-
-
-
