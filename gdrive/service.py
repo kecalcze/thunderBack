@@ -1,12 +1,14 @@
-from gdrive import helper
-import apiclient.discovery
-from apiclient.http import MediaIoBaseDownload
-from apiclient.errors import HttpError
 import httplib2
 import os
 import io
 import time
 import random
+
+from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaIoBaseDownload
+
+from gdrive import helper
+
 
 class BaseService:
 
@@ -21,8 +23,7 @@ class BaseService:
 
     def handle_progressless_iter(self, error, progressless_iters):
         if progressless_iters > self.NUM_RETRIES:
-            print
-            'Failed to make progress for too many consecutive iterations.'
+            print('Failed to make progress for too many consecutive iterations.')
             raise error
 
         sleeptime = random.random() * (2 ** progressless_iters)
@@ -127,8 +128,6 @@ class BaseService:
                 progressless_iters = 0
 
         return filename
-
-#upload("D:/Capture.JPG")
 
 
 

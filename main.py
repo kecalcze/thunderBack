@@ -11,7 +11,7 @@ class Main():
     def __init__(self, argv):
         self.argv = argv
         host = platform.system()
-        if host is 'Windows':
+        if host == 'Windows':
             from windows import folderService, compressor
             print("Loading windows modules")
         else:

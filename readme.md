@@ -12,7 +12,7 @@ solution.
 
   * **Windows:**
 
-   `pip install --upgrade google-api-python-client`
+   `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
 
   * **Ubuntu 16.04+ :**
 
@@ -20,7 +20,7 @@ solution.
 
   `sudo easy_install3 pip`
 
-  `sudo pip3 install --upgrade google-api-python-client` 
+  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib` 
     
     or
     
