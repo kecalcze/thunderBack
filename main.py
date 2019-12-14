@@ -5,6 +5,7 @@ import platform
 import sys
 import getopt
 import socket
+import pprint
 
 class Main():
 
@@ -12,16 +13,15 @@ class Main():
         self.argv = argv
         host = platform.system()
         if host == 'Windows':
-            from windows import folderService, compressor
             print("Loading windows modules")
+            from windows import folderService, compressor
         else:
-            from linux import folderService, compressor
             print("Loading linux modules")
+            from linux import folderService, compressor
 
         # file services
         from gdrive import service
-        self.storage =  service.BaseService()
-
+        self.storage = service.BaseService()
 
         self.folderService = folderService.FolderService()
         self.compressor = compressor.Compressor()
@@ -32,9 +32,11 @@ class Main():
     def action_upload(self):
         filename = self.compressor.compress(self.defaultFolder, self.folderService.getTempFolder(), self.hostname)
         print("Begin upload")
-        self.storage.upload(filename)
-        print("Cleaning up")
-        os.remove(filename)
+        try:
+            self.storage.upload(filename)
+        finally:
+            print("Cleaning up")
+            os.remove(filename)
         print("Finished")
 
     # action for downloading latest backup
@@ -42,9 +44,18 @@ class Main():
         print("Begin download")
         filename = self.storage.download(self.folderService)
         print("Start decompression")
-        self.compressor.decompress(filename, self.folderService.getDefaultProfileFolder())
-        print("Cleaning up")
-        os.remove(filename)
+        try:
+            self.compressor.decompress(filename, self.folderService.getDefaultProfileFolder())
+        finally:
+            print("Cleaning up")
+            os.remove(filename)
+
+    def action_clean(self):
+        print("Begin cleaning cloud data")
+        files = self.storage.clean()
+        print('Cleaned:')
+        pprint.pprint(files)
+        print('Cleaning complete')
 
     # main routine
     def run(self):
@@ -65,6 +76,10 @@ class Main():
             self.action_upload()
         elif action == "download":
             self.action_download()
+        elif action == "clean":
+            if input("This will clean all your backups in cloud. Are you sure? (y/n)") != "y":
+                exit()
+            self.action_clean()
         elif action:
             print("Action not found")
 

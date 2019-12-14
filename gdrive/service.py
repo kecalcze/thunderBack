@@ -1,8 +1,10 @@
+import apiclient
 import httplib2
 import os
 import io
 import time
 import random
+from hurry.filesize import size
 
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
@@ -39,12 +41,6 @@ class BaseService:
         TITLE = os.path.basename(filename)
         progressless_iters = 0
 
-        # Check if upload folder exists
-        folder_id = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
-        if folder_id is None:
-            #create the folder
-            folder_id = self.helper.create_folder(helper.UPLOADFOLDER)
-
         # Insert a file. Files are comprised of contents and metadata.
         # MediaFileUpload abstracts uploading file contents from a file on disk.
         media_body = apiclient.http.MediaFileUpload(
@@ -53,10 +49,9 @@ class BaseService:
         )
         # The body contains the metadata for the file.
         body = {
-          'title': TITLE,
+          'name': TITLE,
           'description': DESCRIPTION,
-          'mimeType': MIMETYPE,
-          'parents': [{'id': folder_id}]
+          'mimeType': MIMETYPE
         }
 
         # look if file exists, then update it or create new
@@ -64,7 +59,7 @@ class BaseService:
         if new_file is None:
             # insert new file
             print("Creating new file ...")
-            uploader = self.helper.service.files().insert(body=body, media_body=media_body)
+            uploader = self.helper.service.files().create(body=body, media_body=media_body)
         else:
             # update existing file
             print("Updating existing file ...")
@@ -95,9 +90,8 @@ class BaseService:
         return new_file
 
     def download(self, folder_service_callback):
-        uploadFolder = self.helper.get_fileid_by_name(helper.UPLOADFOLDER)
         # get newest file download url
-        downloadInfo = self.helper.get_newest_file_down_info(uploadFolder)
+        downloadInfo = self.helper.get_newest_file_down_info()
         progressless_iters = 0
 
         # download file
@@ -128,6 +122,16 @@ class BaseService:
                 progressless_iters = 0
 
         return filename
+
+    def clean(self):
+        files = self.helper.get_all_files_info()
+
+        # filesize humanization and deletion
+        for file in files:
+            self.helper.service.files().delete(fileId=file['id']).execute()
+            print(file['size'])
+            file['size'] = size(int(file['size']))
+        return files
 
 
 

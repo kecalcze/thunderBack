@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
 
 
-SCOPES = 'https://www.googleapis.com/auth/drive'
+SCOPES = 'https://www.googleapis.com/auth/drive.file'
 CLIENT_SECRET_FILE = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + '/client_secret.json'
 APPLICATION_NAME = 'ThunderBack'
 ROOTPARENT = 'root'
@@ -42,7 +42,7 @@ class Helper:
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                creds.refresh(Http())
             else:
                 flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
                 auth_url, _ = flow.authorization_url(prompt='consent')
@@ -74,26 +74,9 @@ class Helper:
         else:
             return items[0]['id']
 
-    def create_folder(self, name, parentid=ROOTPARENT):
-
-        # The body contains the metadata for the file.
-        body = {
-          'title': name,
-          'description': 'ThunderBack Upload folder',
-          'mimeType': 'application/vnd.google-apps.folder',
-          'parents': [{'id': parentid}]
-        }
-
-        # Perform the request and print the result.
-        results = self.service.files().insert(body=body).execute()
-        if not results:
-            print('Folder not created. Something went wrong.')
-            return None
-        else:
-            return results['id']
     # returns file id and download url
-    def get_newest_file_down_info(self, folder="root"):
-        results = self.service.files().list(orderBy='createdTime', q='"' + folder + '" in parents and trashed = false', ).execute()
+    def get_newest_file_down_info(self):
+        results = self.service.files().list(orderBy='createdTime', q='trashed = false', ).execute()
         files = results.get('files', [])
         request = self.service.files().get_media(fileId=files[0]['id'])
         if not results:
@@ -101,3 +84,8 @@ class Helper:
             exit(1)
         else:
             return dict(id=files[0]['id'], title=files[0]['name'], request=request)
+
+    def get_all_files_info(self):
+        results = self.service.files().list(orderBy='createdTime', q='trashed = false', fields='files(id,size,name)').execute()
+        files = results.get('files', [])
+        return files
