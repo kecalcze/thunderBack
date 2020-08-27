@@ -14,24 +14,24 @@ solution.
 
    `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
 
-  * **Ubuntu 16.04+ :**
+  * **Ubuntu 18.04+ :**
 
   `sudo apt-get install python3-setuptools`
 
   `sudo easy_install3 pip`
 
-  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize` 
-    
+  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
+
     or
-    
-    ``apt install python3-googleapi python3-google-apputils python3-googlecloudapis``
+
+    ``apt install python3-googleapi``
 
 * Start using this script by launching main.py with otiopns
-   
+
    `python main.py -a download # get latest backup`
 
    `python main.py -a upload # update backup from this device`
-   
+
 
 
 ## Contributors
