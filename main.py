@@ -2,6 +2,7 @@
 __author__ = 'Bivoj'
 import os
 import platform
+import signal
 import sys
 import getopt
 import socket
@@ -9,10 +10,10 @@ import pprint
 
 
 def sigint_handler(signum, frame):
-    print ('Stop pressing the CTRL+C!')
+    print('Stop pressing the CTRL+C!')
 
 
-signal.signal(signal.SIGINT, sigint_handler)
+#signal.signal(signal.SIGINT, sigint_handler)
 
 
 class Main:
