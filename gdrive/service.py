@@ -1,11 +1,10 @@
+import io
+import os
+import random
+import time
+
 import apiclient
 import httplib2
-import os
-import io
-import time
-import random
-from hurry.filesize import size
-
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
@@ -51,14 +50,15 @@ class BaseService:
         body = {
           'name': TITLE,
           'description': DESCRIPTION,
-          'mimeType': MIMETYPE
+          'mimeType': MIMETYPE,
         }
 
         # look if file exists, then update it or create new
-        new_file = self.helper.get_fileid_by_name(TITLE, False)
+        new_file = self.helper.get_file_id_by_name(TITLE)
         if new_file is None:
             # insert new file
             print("Creating new file ...")
+            body.update({'parents': ['appDataFolder']})
             uploader = self.helper.service.files().create(body=body, media_body=media_body)
         else:
             # update existing file
@@ -126,15 +126,14 @@ class BaseService:
     def clean(self):
         files = self.helper.get_all_files_info()
 
-        # filesize humanization and deletion
+        # file size humanization and deletion
         for file in files:
             self.helper.service.files().delete(fileId=file['id']).execute()
-            print(file['size'])
-            file['size'] = size(int(file['size']))
         return files
 
-
-
+    def list(self):
+        files = self.helper.get_all_files_info()
+        return files
 
 
 

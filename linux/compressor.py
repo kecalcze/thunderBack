@@ -4,6 +4,7 @@ import os
 
 class Compressor:
     def compress(self, inputDir, outputDir, filename="test"):
+        os.remove(inputDir + '/lock')
         print("Compressing: " + inputDir)
         # concatenate the folders for file name
         zipfilename = "%s.zip" % (outputDir + filename)

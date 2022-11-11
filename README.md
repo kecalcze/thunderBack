@@ -22,10 +22,6 @@ solution.
 
   `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
 
-    or
-
-    ``apt install python3-googleapi``
-
 * Start using this script by launching main.py with otiopns
 
    `python main.py -a download # get latest backup`

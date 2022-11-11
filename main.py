@@ -2,18 +2,10 @@
 __author__ = 'Bivoj'
 import os
 import platform
-import signal
 import sys
 import getopt
 import socket
 import pprint
-
-
-def sigint_handler(signum, frame):
-    print('Stop pressing the CTRL+C!')
-
-
-#signal.signal(signal.SIGINT, sigint_handler)
 
 
 class Main:
@@ -66,6 +58,11 @@ class Main:
         pprint.pprint(files)
         print('Cleaning complete')
 
+    def action_list(self):
+        print("List of files:")
+        files = self.storage.list()
+        pprint.pprint(files)
+
     # main routine
     def run(self):
         action = ''
@@ -85,6 +82,8 @@ class Main:
             self.action_upload()
         elif action == "download":
             self.action_download()
+        elif action == "list":
+            self.action_list()
         elif action == "clean":
             if input("This will clean all your backups in cloud. Are you sure? (y/n)") != "y":
                 exit()

@@ -7,9 +7,11 @@ class FolderService:
     def getDefaultProfileFolder(self):
         uName = getpass.getuser()
 
+        profilePath = False
+
         thunderbirdPath = '/home/'+uName+'/.thunderbird'
         for x in os.listdir(thunderbirdPath):
-            if ".default" in x:
+            if x.endswith(".default"):
                 profilePath = thunderbirdPath + "/" + x
                 break
 
