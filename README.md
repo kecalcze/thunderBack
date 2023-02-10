@@ -20,7 +20,7 @@ solution.
 
   `sudo easy_install3 pip`
 
-  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
+  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs`
 
 * Start using this script by launching main.py with otiopns
 
