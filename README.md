@@ -14,19 +14,23 @@ solution.
 
    `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
 
-  * **Ubuntu 18.04+ :**
+  * **Ubuntu 18.04 with venv :**
 
-  `sudo apt-get install python3-setuptools`
+  `bash` - fish doesn't work
 
-  `sudo easy_install3 pip`
+  `python3 -m venv venv`
+  
+  `source venv/bin/activate`
 
-  `sudo pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs`
+  `python -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs`
 
 * Start using this script by launching main.py with otiopns
 
    `python main.py -a download # get latest backup`
 
    `python main.py -a upload # update backup from this device`
+
+   `python main.py -a list # list curently availabla backup files`
 
 
 
