@@ -57,7 +57,7 @@ class Helper:
 
     # returns file id and download url
     def get_newest_file_down_info(self):
-        results = self.service.files().list(spaces='appDataFolder', orderBy='createdTime', q='trashed = false and mimeType = "application/vnd.google-apps.file"').execute()
+        results = self.service.files().list(spaces='appDataFolder', orderBy='createdTime', q='trashed = false').execute()
 
         if not results:
             print('Could`t get file info. Check your connection. Exiting.')
