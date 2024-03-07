@@ -14,11 +14,13 @@ solution.
 
    `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
 
-  * **Ubuntu 18.04 with venv :**
+  * **Ubuntu 22.04 with venv :**
 
   `bash` - fish doesn't work
 
-  `python3 -m venv venv`
+  `sudo apt install python3-virtualenv`
+
+  `virtualenv -p python3 venv`
   
   `source venv/bin/activate`
 
