@@ -54,9 +54,16 @@ class Main:
     def action_clean(self):
         print("Begin cleaning cloud data")
         files = self.storage.clean()
-        print('Cleaned:')
+        print('Cleaned files:')
         pprint.pprint(files)
         print('Cleaning complete')
+
+    def action_clean_all(self):
+        print("Begin cleaning all cloud data")
+        files = self.storage.clean(deleteAll=True)
+        print('Cleaned files:')
+        pprint.pprint(files)
+        print('Cleaning all complete')
 
     def action_list(self):
         print("List of files:")
@@ -73,7 +80,7 @@ class Main:
             sys.exit(2)
         for opt, arg in opts:
             if opt == '-h':
-                print('main.py -a <download/upload>')
+                print('main.py -a <download/upload/list/clean/clean-all>')
                 sys.exit()
             elif opt in ("-a", "--action"):
                 action = arg
@@ -85,9 +92,13 @@ class Main:
         elif action == "list":
             self.action_list()
         elif action == "clean":
-            if input("This will clean all your backups in cloud. Are you sure? (y/n)") != "y":
+            if input("This will leave only the latest backup. Are you sure? (y/n)") != "y":
                 exit()
             self.action_clean()
+        elif action == "clean-all":
+            if input("This will clean all your backups in cloud. Are you sure? (y/n)") != "y":
+                exit()
+            self.action_clean_all()
         elif action:
             print("Action not found")
 

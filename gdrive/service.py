@@ -123,11 +123,15 @@ class BaseService:
 
         return filename
 
-    def clean(self):
+    def clean(self, deleteAll: bool = False):
         files = self.helper.get_all_files_info()
+
+        if not deleteAll:
+            del files[-1]
 
         # file size humanization and deletion
         for file in files:
+            print('Deleting file ' + file['name'] + ' created ' + file['createdTime'])
             self.helper.service.files().delete(fileId=file['id']).execute()
         return files
 

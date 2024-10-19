@@ -1,5 +1,6 @@
 import inspect
 import os
+from itertools import count
 
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -75,6 +76,6 @@ class Helper:
 
     def get_all_files_info(self):
         results = self.service.files().list(spaces='appDataFolder', orderBy='createdTime', q='trashed = false',
-                                            fields='files(id,size,name)').execute()
+                                            fields='files(id,size,name,createdTime)').execute()
         files = results.get('files', [])
         return files
