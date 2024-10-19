@@ -34,7 +34,7 @@ class Helper:
         if not creds or not creds.valid:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
             creds = flow.run_local_server(host='localhost',
-                                            port=8080,
+                                            port=9464,
                                             authorization_prompt_message='Please visit this URL: {url}',
                                             success_message='The auth flow is complete; you may close this window.',
                                             open_browser=True)

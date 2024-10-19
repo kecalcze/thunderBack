@@ -1,19 +1,20 @@
 __author__ = 'Jakub'
-import getpass
-import os
 
-class FolderService:
+import getpass
+
+from Interfaces.PlatformFolderServiceInterface import PlatformFolderServiceInterface
+
+
+class FolderService(PlatformFolderServiceInterface):
 
     def getDefaultProfileFolder(self):
+        global profileFolderName
         uName = getpass.getuser()
+        thunderbirdPath = '/home/' + uName + '/.thunderbird'
 
-        profilePath = False
+        profileFolderName = self.getCurrentActiveProfileFolderName(thunderbirdProfilePath=thunderbirdPath)
 
-        thunderbirdPath = '/home/'+uName+'/.thunderbird'
-        for x in os.listdir(thunderbirdPath):
-            if x.endswith(".default"):
-                profilePath = thunderbirdPath + "/" + x
-                break
+        profilePath = thunderbirdPath + "/" + profileFolderName
 
         return profilePath
 
