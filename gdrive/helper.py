@@ -1,5 +1,6 @@
 import inspect
 import os
+from itertools import count
 
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -34,7 +35,7 @@ class Helper:
         if not creds or not creds.valid:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
             creds = flow.run_local_server(host='localhost',
-                                            port=8080,
+                                            port=9464,
                                             authorization_prompt_message='Please visit this URL: {url}',
                                             success_message='The auth flow is complete; you may close this window.',
                                             open_browser=True)
@@ -75,6 +76,6 @@ class Helper:
 
     def get_all_files_info(self):
         results = self.service.files().list(spaces='appDataFolder', orderBy='createdTime', q='trashed = false',
-                                            fields='files(id,size,name)').execute()
+                                            fields='files(id,size,name,createdTime)').execute()
         files = results.get('files', [])
         return files

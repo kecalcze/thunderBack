@@ -2,18 +2,18 @@ __author__ = 'Jakub'
 import getpass
 import os
 
-class FolderService:
+from Interfaces.PlatformFolderServiceInterface import PlatformFolderServiceInterface
+
+
+class FolderService(PlatformFolderServiceInterface):
 
     def getDefaultProfileFolder(self):
         uName = getpass.getuser()
-
         thunderbirdPath = 'C:/Users/'+uName+'/AppData/Roaming/Thunderbird/Profiles'
-        for x in os.listdir(thunderbirdPath):
-            if ".default" in x:
-                profielPath = thunderbirdPath + "/" + x
-                break
 
-        return profielPath
+        profilePath = self.getCurrentActiveProfileFolderName(thunderbirdProfilePath=thunderbirdPath)
+
+        return profilePath
 
     def getTempFolder(self):
         return "C:/Windows/temp/"
