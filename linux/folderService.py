@@ -10,11 +10,14 @@ class FolderService(PlatformFolderServiceInterface):
     def getDefaultProfileFolder(self):
         global profileFolderName
         uName = getpass.getuser()
-        thunderbirdPath = '/home/' + uName + '/.thunderbird'
+        thunderbirdProfileDataPath = '/home/' + uName + '/.thunderbird'
+        thunderbirdProfileConfigPath = thunderbirdProfileDataPath + '/profiles.ini'
 
-        profileFolderName = self.getCurrentActiveProfileFolderName(thunderbirdProfilePath=thunderbirdPath)
+        profileFolderName = self.getCurrentActiveProfileFolderName(
+            thunderbirdProfileConfigPath=thunderbirdProfileConfigPath
+        )
 
-        profilePath = thunderbirdPath + "/" + profileFolderName
+        profilePath = thunderbirdProfileDataPath + "/" + profileFolderName
 
         return profilePath
 

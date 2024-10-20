@@ -9,12 +9,14 @@ class PlatformFolderServiceInterface:
         """Get platform specific temp folder"""
         pass
 
-    def getCurrentActiveProfileFolderName(self, thunderbirdProfilePath: str) -> str:
+    def getCurrentActiveProfileFolderName(
+            self,
+            thunderbirdProfileConfigPath: str
+    ) -> str:
         global profileFolderName
-        profilesConfigPath = thunderbirdProfilePath + '/profiles.ini'
 
         config = configparser.ConfigParser()
-        config.read(profilesConfigPath)
+        config.read(thunderbirdProfileConfigPath)
 
         for sectionName in config.sections():
             if sectionName.startswith('Profile'):

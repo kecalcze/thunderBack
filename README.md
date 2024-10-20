@@ -12,7 +12,7 @@ solution.
 
   * **Windows:**
 
-   `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize`
+  `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs`
 
   * **Ubuntu 22.04 with venv :**
 
