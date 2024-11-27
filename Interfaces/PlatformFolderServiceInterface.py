@@ -5,8 +5,8 @@ class PlatformFolderServiceInterface:
         """Get default thunderbird profile folder for current user"""
         pass
 
-    def getTempFolder(self) -> str:
-        """Get platform specific temp folder"""
+    def getTempFolderName(self) -> str:
+        """Get platform specific temp folder name"""
         pass
 
     def getCurrentActiveProfileFolderName(

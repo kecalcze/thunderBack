@@ -9,7 +9,7 @@ class FolderService(PlatformFolderServiceInterface):
     def getDefaultProfileFolder(self):
         uName = getpass.getuser()
         thunderbirdProfileConfigPath = 'C:/Users/' + uName + '/AppData/Roaming/Thunderbird/profiles.ini'
-        thunderbirdProfileDataPath = 'C:/Users/' + uName + '/AppData/Roaming/Thunderbird/'
+        thunderbirdProfileDataPath = 'C:/Users/' + uName + '/AppData/Roaming/Thunderbird/Profiles/'
 
         profilePath = self.getCurrentActiveProfileFolderName(
             thunderbirdProfileConfigPath=thunderbirdProfileConfigPath
@@ -17,5 +17,5 @@ class FolderService(PlatformFolderServiceInterface):
 
         return thunderbirdProfileDataPath + profilePath
 
-    def getTempFolder(self):
+    def getTempFolderName(self):
         return "C:/Windows/temp/"

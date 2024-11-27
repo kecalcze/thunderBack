@@ -1,4 +1,4 @@
-__author__ = 'Jakub'
+__author__ = 'kecalcze@gmail.com'
 
 import getpass
 
@@ -21,5 +21,5 @@ class FolderService(PlatformFolderServiceInterface):
 
         return profilePath
 
-    def getTempFolder(self):
+    def getTempFolderName(self):
         return "/var/tmp/"
