@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.4" author="PygubuDesigner 0.39.3">
+  <project>
+    <settings />
+    <customwidgets />
+  </project>
+  <object class="tk.Toplevel" id="mainwindow">
+    <property name="height">200</property>
+    <property name="width">200</property>
+    <property name="resizable">both</property>
+    <property name="title" translatable="yes">ThunderBack</property>
+    <child>
+      <object class="ttk.Frame" id="frame1">
+        <property name="height">200</property>
+        <property name="width">200</property>
+        <layout manager="pack">
+          <property name="side">top</property>
+        </layout>
+        <child>
+          <object class="tk.Canvas" id="canvas1" named="True">
+            <property name="cursor">arrow</property>
+            <property name="state">normal</property>
+            <layout manager="pack">
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Label" id="label1">
+            <property name="text" translatable="yes">label1</property>
+            <layout manager="pack">
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Progressbar" id="progressbar2">
+            <property name="orient">horizontal</property>
+            <layout manager="pack">
+              <property name="expand">true</property>
+              <property name="fill">x</property>
+              <property name="padx">5</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Text" id="text1">
+            <property name="height">10</property>
+            <property name="width">50</property>
+            <layout manager="pack">
+              <property name="padx">15</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Frame" id="frame2">
+            <property name="height">200</property>
+            <property name="width">200</property>
+            <layout manager="pack">
+              <property name="expand">true</property>
+              <property name="fill">x</property>
+              <property name="side">left</property>
+            </layout>
+            <child>
+              <object class="ttk.Button" id="button3">
+                <property name="text" translatable="yes">button3</property>
+                <layout manager="pack">
+                  <property name="expand">true</property>
+                  <property name="fill">both</property>
+                  <property name="side">left</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Button" id="button4">
+                <property name="text" translatable="yes">button4</property>
+                <layout manager="pack">
+                  <property name="expand">true</property>
+                  <property name="fill">both</property>
+                  <property name="side">right</property>
+                </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

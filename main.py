@@ -6,32 +6,42 @@ import sys
 import getopt
 import socket
 import pprint
+from termcolor import colored
 
 
 class Main:
 
     def __init__(self, argv):
+        self.storage = None
         self.argv = argv
+
         host = platform.system()
         if host == 'Windows':
-            print("Loading windows modules")
-            from windows import folderService, compressor
+            print("Loading Windows modules")
+            from Windows import folderService, compressor, processService
         else:
-            print("Loading linux modules")
-            from linux import folderService, compressor
-
-        # file services
-        from gdrive import service
-        self.storage = service.BaseService()
+            print("Loading Linux modules")
+            from Linux import folderService, compressor, processService
 
         self.folderService = folderService.FolderService()
         self.compressor = compressor.Compressor()
+        self.processService = processService.ProcessService()
+
+        from Gui import gui_manager
+        self.GuiManager = gui_manager.GuiManager()
+
         self.hostname = socket.gethostname()
         self.defaultFolder = self.folderService.getDefaultProfileFolder()
 
+    def initialize_gdrive(self):
+        # file services
+        from GoogleDrive import service
+        self.storage = service.BaseService()
+        
     # action for creating new snapshot
     def action_upload(self):
-        filename = self.compressor.compress(self.defaultFolder, self.folderService.getTempFolder(), self.hostname)
+        self.initialize_gdrive()
+        filename = self.compressor.compress(self.defaultFolder, self.folderService.getTempFolderName(), self.hostname)
         print("Begin upload")
         try:
             self.storage.upload(filename)
@@ -42,6 +52,7 @@ class Main:
 
     # action for downloading latest backup
     def action_download(self):
+        self.initialize_gdrive()
         print("Begin download")
         filename = self.storage.download(self.folderService)
         print("Start decompression")
@@ -52,6 +63,7 @@ class Main:
             os.remove(filename)
 
     def action_clean(self):
+        self.initialize_gdrive()
         print("Begin cleaning cloud data")
         files = self.storage.clean()
         print('Cleaned files:')
@@ -59,6 +71,7 @@ class Main:
         print('Cleaning complete')
 
     def action_clean_all(self):
+        self.initialize_gdrive()
         print("Begin cleaning all cloud data")
         files = self.storage.clean(deleteAll=True)
         print('Cleaned files:')
@@ -66,9 +79,18 @@ class Main:
         print('Cleaning all complete')
 
     def action_list(self):
+        self.initialize_gdrive()
         print("List of files:")
         files = self.storage.list()
         pprint.pprint(files)
+
+    def action_test(self):
+        print("Is Thunderbird running")
+        message = colored(str(self.processService.isThunderbirdRunning()), 'magenta')
+        print(message)
+
+    def action_gui(self):
+        self.GuiManager.run()
 
     # main routine
     def run(self):
@@ -99,6 +121,10 @@ class Main:
             if input("This will clean all your backups in cloud. Are you sure? (y/n)") != "y":
                 exit()
             self.action_clean_all()
+        elif action == "gui":
+            self.action_gui()
+        elif action == "test":
+            self.action_test()
         elif action:
             print("Action not found")
 

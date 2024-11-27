@@ -3,3 +3,8 @@
 /*/__pycache__/
 *.pyc
 venv/
+nuitka*
+main.cmd
+main.exe
+main.build
+main.dist

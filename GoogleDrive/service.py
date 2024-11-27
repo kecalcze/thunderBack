@@ -8,7 +8,7 @@ import httplib2
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
-from gdrive import helper
+from GoogleDrive import helper
 
 
 class BaseService:
@@ -96,7 +96,7 @@ class BaseService:
 
         # download file
         print('Downloading latest backup ...')
-        filename = folder_service_callback.getTempFolder() + downloadInfo['title']
+        filename = folder_service_callback.getTempFolderName() + downloadInfo['title']
         fh = io.FileIO(filename, 'wb')
         downloader = MediaIoBaseDownload(fh, downloadInfo['request'])
         done = False

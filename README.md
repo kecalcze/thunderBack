@@ -24,7 +24,7 @@ solution.
   
   `source venv/bin/activate`
 
-  `python -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs`
+  `python -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib hurry.filesize appdirs psutil pygubu-designer nuitka`
 
 * Start using this script by launching main.py with otiopns
 
@@ -34,7 +34,16 @@ solution.
 
    `python main.py -a list # list curently availabla backup files`
 
+## Build standalone exe
 
+`python -m nuitka main.py 
+  --product-name=ThunderBack 
+  --product-version=0.3 --file-version=1.0 
+  --standalone
+  --include-package=pygubu
+  --plugin-enable=tk-inter
+  --include-data-files=Gui/main_window.ui=Gui/main_window.ui
+  --include-data-files=GoogleDrive/client_secret.json=GoogleDrive/client_secret.json`
 
 ## Contributors
 
